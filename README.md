@@ -1,7 +1,5 @@
 # WeSearch
 
-## Introduction
-
 WeSearch is a platform designed to connect researchers and participants for research study events. Researchers can post their study events, allowing participants to easily find and participate in relevant studies.
 
 ## Features
