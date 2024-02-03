@@ -20,7 +20,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 2em;
+  column-gap: 4em;
 }
 .nav img {
   height: 30px;
