@@ -32,6 +32,7 @@ const ParticipantLogin = () => {
               backgroundImage: `url(${previewImage.src})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
+              backgroundColor: "blue",
               overflowY: "hidden",
             }}
           ></Paper>
