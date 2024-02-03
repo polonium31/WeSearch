@@ -13,11 +13,11 @@ export default () => {
                         <h1>WeSearch</h1>
                         <img className="logo" src={Logo.src}></img>
                     </div>
-                    <p>Connecting studies to students to facilitate research and create opportunities!</p>
+                    <p>A groundbreaking platform designed to seamlessly connect students with researchers, fostering a dynamic environment for collaborative projects within the academic realm.</p>
                 </div>
                 <hr />
                 <div className="buttons">
-                <Link href="/ParticipantLogin"className="btn yb">Login</Link>
+                <Link href="/ParticipantLogin"className="btn syb">Login</Link>
                     <Link href="/ParticipantLogin"className="btn lb">Participant Registration</Link>
                     <Link href="/ResearcherLogin"className="btn db">Researcher Registration</Link>
                 </div>
@@ -30,7 +30,7 @@ export default () => {
                     <h2>There are so many research studies waiting for participants!
                         Register for WeSearch today.
                     </h2>
-                    <Link href="/login"className="btn yb">Login to see all events</Link>
+                    <Link href="/login"className="btn syb">Login to see all events</Link>
                 </div>
             </div>
         </>

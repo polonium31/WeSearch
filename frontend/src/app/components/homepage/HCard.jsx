@@ -4,23 +4,23 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+
 
 export default function HCard({ d, t, i }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card className="hcard"sx={{ maxWidth: 345 }}>
       <CardMedia
         sx={{ height: 140 }}
         image={i.src}
         title="green iguana"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <h1>
           {t}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
+        </h1>
+        <p>
           {d}
-        </Typography>
+        </p>
       </CardContent>
       <CardActions>
         <Button size="small">Learn More</Button>
