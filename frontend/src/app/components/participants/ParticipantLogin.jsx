@@ -1,10 +1,11 @@
+'use client'
 import React from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import previewImage from "./assets/people.png";
+import previewImage from "/public/assets/people.png";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -28,9 +29,10 @@ const ParticipantLogin = () => {
           <Paper
             style={{
               height: "100%",
-              backgroundImage: `url(${previewImage})`,
+              backgroundImage: `url(${previewImage.src})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
+              backgroundColor: "blue",
               overflowY: "hidden",
             }}
           ></Paper>
