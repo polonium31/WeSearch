@@ -22,6 +22,11 @@ a {
   justify-content: center;
   column-gap: 4em;
 }
+img.logo {
+  height: 30px;
+  width: 30px;
+  object-fit: contain;
+}
 .nav img {
   height: 30px;
   width: 30px;
@@ -33,4 +38,91 @@ a {
 }
 .navline {
   width: 50%; 
+}
+
+/*Home*/
+.home {
+  min-height: 100vh;
+  padding: 2em;
+}
+.header {
+  display: flex;
+  column-gap: 2em;
+  align-items: center;
+  padding: 1em 0;
+}
+.title {
+  display: flex;
+  align-items: center;
+}
+.header h1 {
+  font-size: max(1.4em,10vw);
+}
+.btn.lb {
+  border: 2px solid var(--lightblue);
+
+}
+.btn {
+  border-radius: 0.3em;
+  padding: 0.5em 2em;
+  color: black;
+  transition: 0.3s;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 1em;
+  margin-top: 1em;
+}
+.btn.db {
+  border: 2px solid var(--blue);
+}
+.btn.db:hover {
+  background-color: var(--blue);
+  color: white;
+}
+.btn.yb{
+  border: 2px solid var(--yellow);
+}
+.btn.yb:hover {
+  background-color: var(--yellow);
+  color: white;
+}
+.events {
+  display: flex;
+  padding: 1em 0;
+  gap: 1em;
+  justify-content: center;
+  align-items: start;
+}
+@media (max-width: 600px) {
+  .events {
+    flex-wrap: wrap;
+  }
+  .home {
+    padding: 0.5em;
+  }
+  .title {
+    flex-wrap: wrap;
+  }
+  .header {
+    flex-wrap: wrap;
+  }
+}
+.events > div {
+  width: 100%;
+  max-width: 15em;
+}
+.btn.lb:hover {
+  background-color: var(--lightblue);
+  color: white;
+}
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 1em;
 }
