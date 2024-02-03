@@ -8,7 +8,8 @@ export default function Home() {
   return (
    <main>
       {/* <ParticipantLogin></ParticipantLogin> */}
-      <ParticipantHome/>
+      <Nav></Nav>
+      <ParticipantHome />
    </main>
   );
 }
