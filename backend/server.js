@@ -48,8 +48,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/signin", async (req, res) => {
   try {
-    console.log("sign in post");
-    const { email, password, firstname, lastname, type } = req.body;
+    const { email, password, fullname, type } = req.body;
 
     // Check if email follows the regex
     const emailRegex = /^[a-z0-9]+@mcmaster\.ca$/;
@@ -59,15 +58,16 @@ app.post("/signin", async (req, res) => {
       const userCredential = await createUserWithEmailAndPassword(
         authc,
         email,
-        password
+        password,
+        fullname,
+        type
       );
       const userRecord = userCredential.user;
       const userRef = db.collection(type).doc(userRecord.uid);
       await userRef.set({
         email: userRecord.email,
         uid: userRecord.uid,
-        firstname: firstname,
-        lastname: lastname,
+        fullname: fullname,
         type: type,
       });
 
@@ -156,8 +156,14 @@ app.get("/events", (req, res) => {
 });
 
 // get event details
-app.get("/events/{id}", (req, res) => {
-  const eventId = req.params.id;
+app.get("/event-details/:eventId", (req, res) => {
+  const eventId = req.params.eventId;
+
+  if (!eventId) {
+    res.status(400).json({ message: "Invalid eventId parameter" });
+    return;
+  }
+
   db.collection("active-events")
     .doc(eventId)
     .get()
@@ -199,7 +205,28 @@ app.post("/register-to-event", (req, res) => {
 });
 
 // edit user details
-app.patch("/edit-user-details", (req, res) => {});
+app.patch("/edit-user-details", async (req, res) => {
+  try {
+    const { userId, ...updatedDetails } = req.body;
+
+    if (!userId) {
+      return res
+        .status(400)
+        .json({ message: "User ID is required in the request body" });
+    }
+
+    const userRef = db.collection("participant").doc(userId);
+
+    await userRef.update(updatedDetails);
+
+    return res
+      .status(200)
+      .json({ message: "User details updated successfully" });
+  } catch (error) {
+    console.error("Error updating user details:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // unregister to event
 app.delete("/unregister-to-event", (req, res) => {
@@ -281,18 +308,37 @@ app.get("/participants-details", (req, res) => {
 
 // create new event
 app.post("/research-event-details", (req, res) => {
-  const { title, description, date, time, location, type, researcherId } =
-    req.body;
+  const {
+    title,
+    description,
+    eligibility,
+    perks,
+    deadline,
+    numberOfVolunteer,
+    majorEligibility,
+    date,
+    time,
+    location,
+    type,
+    attendance,
+    researcherId,
+  } = req.body;
   const eventRef = db.collection("active-events").doc();
   eventRef
     .set({
-      title: title,
-      description: description,
-      date: date,
-      time: time,
-      location: location,
-      type: type,
-      researcherId: researcherId,
+      title,
+      description,
+      eligibility,
+      perks,
+      deadline,
+      numberOfVolunteer,
+      majorEligibility,
+      date,
+      time,
+      location,
+      type,
+      attendance,
+      researcherId,
     })
     .then(() => {
       res.status(200).json({ message: "Event created successfully" });
@@ -378,7 +424,20 @@ app.patch("/edit-researcher-details", (req, res) => {
 });
 
 // edit event details
-app.patch("/edit-research-event-details", (req, res) => {});
+app.patch("/edit-research-event-details", (req, res) => {
+  const { uid, ...updatedDetails } = req.body;
+  const eventRef = db.collection("active-events").doc(uid);
+
+  eventRef
+    .update(updatedDetails)
+    .then(() => {
+      res.status(200).json({ message: "Event updated successfully" });
+    })
+    .catch((error) => {
+      console.error("Error updating event:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // delete event
 app.delete("/delete-event", (req, res) => {
