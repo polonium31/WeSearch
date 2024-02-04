@@ -19,4 +19,8 @@ WeSearch is a platform designed to connect researchers and participants for rese
 - Code Editor: VS Code
 - Design: Figma/Canva
 
+## Slideshow
+- https://docs.google.com/presentation/d/1TLwoOeFtCtFVcmyZr_HDRgjOKyedK_X553fhr8Uy1c0/edit#slide=id.g2678b6f7723_0_98
+  
+
 ## Contributing
