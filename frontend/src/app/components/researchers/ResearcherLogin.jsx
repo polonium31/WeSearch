@@ -2,7 +2,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import previewImage from "/public/assets/people.png";
+import previewImage from "/public/assets/research.jpg";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { TextField, Button, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ const theme = createTheme({
   },
 });
 
-const ParticipantLogin = () => {
+const ResearcherLogin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -68,7 +68,7 @@ const ParticipantLogin = () => {
               <b>Login with your University</b>
             </Typography>
             <Typography variant="body1" style={{ marginBottom: "30px" }}>
-              Participate in events and earn exciting rewards!
+              Host events and find top participants!
             </Typography>
 
             <Container component="main" maxWidth="xs">
@@ -96,7 +96,7 @@ const ParticipantLogin = () => {
                   alignItems=""
                   onClick={handleLogin}
                   style={{
-                    backgroundColor: "orange",
+                    backgroundColor: "blue",
                     borderRadius: "30px",
                     color: "white",
                     width: "200px",
@@ -114,4 +114,4 @@ const ParticipantLogin = () => {
   );
 };
 
-export default ParticipantLogin;
+export default ResearcherLogin;

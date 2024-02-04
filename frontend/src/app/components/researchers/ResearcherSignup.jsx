@@ -2,7 +2,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import previewImage from "/public/assets/people.png";
+import previewImage from "/public/assets/research.jpg";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { TextField, Button, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -20,14 +20,17 @@ const theme = createTheme({
   },
 });
 
-const ParticipantLogin = () => {
+const ResearcherSignup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const handleLogin = () => {
+  const handleSignup = () => {
     console.log("Username:", username);
     console.log("Password:", password);
+    console.log("name:", name);
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container style={{ height: "100vh" }}>
@@ -65,14 +68,22 @@ const ParticipantLogin = () => {
             }}
           >
             <Typography variant="h5" gutterBottom>
-              <b>Login with your University</b>
+              <b>Sign up with your University email</b>
             </Typography>
             <Typography variant="body1" style={{ marginBottom: "30px" }}>
-              Participate in events and earn exciting rewards!
+              Host events and find top participants!
             </Typography>
 
             <Container component="main" maxWidth="xs">
               <form style={{ textAlign: "center" }}>
+                <TextField
+                  label="Full Name"
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
                 <TextField
                   label="Username"
                   variant="outlined"
@@ -94,16 +105,16 @@ const ParticipantLogin = () => {
                   variant="contained"
                   color="primary"
                   alignItems=""
-                  onClick={handleLogin}
+                  onClick={handleSignup}
                   style={{
-                    backgroundColor: "orange",
+                    backgroundColor: "blue",
                     borderRadius: "30px",
                     color: "white",
                     width: "200px",
                     marginTop: "10px",
                   }}
                 >
-                  Login
+                  Sign Up
                 </Button>
               </form>
             </Container>
@@ -114,4 +125,4 @@ const ParticipantLogin = () => {
   );
 };
 
-export default ParticipantLogin;
+export default ResearcherSignup;

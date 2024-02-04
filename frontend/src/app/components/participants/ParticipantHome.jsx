@@ -13,6 +13,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
+import Nav from "../Nav";
 
 function ParticipantHome(props) {
   const [surveyChecked, setSurveyChecked] = useState(false);
@@ -78,7 +79,7 @@ function ParticipantHome(props) {
   };
 
   const DemoPaper = styled(Paper)(({ theme }) => ({
-    width: 190,
+    width: 200,
     height: "100vh",
     ...theme.typography.body2,
     textAlign: "center",
@@ -86,100 +87,103 @@ function ParticipantHome(props) {
   }));
 
   return (
-    <Box sx={{ display: "flex", marginTop: "10px" }}>
-      <DemoPaper square={false}>
-        <Paper
-          style={{
-            backgroundColor: "#F4B942",
-            width: "190px",
-            height: "60px",
-            color: "white",
-            paddingTop: "30px",
-            textAlign: "center",
-          }}
-        >
-          FILTERS
-          <Typography
-            sx={{ fontSize: "10px", color: "white" }}
-            color="text.secondary"
+    <>
+      <Nav></Nav>
+      <Box sx={{ display: "flex", marginTop: "10px" }}>
+        <DemoPaper square={false}>
+          <Paper
+            style={{
+              backgroundColor: "#F4B942",
+              width: "200px",
+              height: "90px",
+              color: "white",
+              paddingTop: "30px",
+              textAlign: "center",
+            }}
           >
-            Select multiple filters
-          </Typography>
-        </Paper>
-        <div style={{ paddingLeft: "20px", paddingTop: "20px" }}>
-          <FormGroup>
-            <CheckboxFilter
-              fontSize="10px"
-              label="Surveys"
-              checked={surveyChecked}
-              onChange={handleSurveyChange}
-            />
-            <CheckboxFilter
-              label="Online"
-              checked={onlineChecked}
-              onChange={handleOnlineChange}
-            />
-            <CheckboxFilter
-              label="In-person"
-              checked={inPersonChecked}
-              onChange={handleInpersonChange}
-            />
-
-            <CheckboxFilter
-              label="Undergrad"
-              checked={UGChecked}
-              onChange={handleUGChange}
-            />
-            <CheckboxFilter
-              label="Grad"
-              checked={GradChecked}
-              onChange={handleGradChange}
-            />
-            <CheckboxFilter
-              label="Phd"
-              checked={phdChecked}
-              onChange={handlephdChange}
-            />
-            <CheckboxFilter
-              label="Professor/faculty"
-              checked={ProfessorChecked}
-              onChange={handleProfessorChange}
-            />
-          </FormGroup>
-        </div>
-      </DemoPaper>
-      <Box sx={{ flex: 1, padding: 2 }}>
-        <Typography
-          sx={{ fontSize: 25, paddingBottom: "10px", fontWeight: "bold" }}
-          color="text.primary"
-        >
-          ALL EVENTS
-        </Typography>
-
-        {eventsArr.map((obj, i) => {
-          return (
-            <Card
-              sx={{ minWidth: "60px", paddingTop: "10px", marginTop: "10px" }}
+            FILTERS
+            <Typography
+              sx={{ fontSize: "10px", color: "white" }}
+              color="text.secondary"
             >
-              <CardContent>
-                <Typography sx={{ fontSize: 20 }} color="text.primary">
-                  {obj.title}
-                </Typography>
-                <Typography variant="h5" component="div"></Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  {obj.des}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={console.log(obj.title)}>
-                  Learn More
-                </Button>
-              </CardActions>
-            </Card>
-          );
-        })}
+              Select multiple filters
+            </Typography>
+          </Paper>
+          <div style={{ paddingLeft: "20px", paddingTop: "20px" }}>
+            <FormGroup>
+              <CheckboxFilter
+                fontSize="10px"
+                label="Surveys"
+                checked={surveyChecked}
+                onChange={handleSurveyChange}
+              />
+              <CheckboxFilter
+                label="Online"
+                checked={onlineChecked}
+                onChange={handleOnlineChange}
+              />
+              <CheckboxFilter
+                label="In-person"
+                checked={inPersonChecked}
+                onChange={handleInpersonChange}
+              />
+
+              <CheckboxFilter
+                label="Undergrad"
+                checked={UGChecked}
+                onChange={handleUGChange}
+              />
+              <CheckboxFilter
+                label="Grad"
+                checked={GradChecked}
+                onChange={handleGradChange}
+              />
+              <CheckboxFilter
+                label="Phd"
+                checked={phdChecked}
+                onChange={handlephdChange}
+              />
+              <CheckboxFilter
+                label="Professor/faculty"
+                checked={ProfessorChecked}
+                onChange={handleProfessorChange}
+              />
+            </FormGroup>
+          </div>
+        </DemoPaper>
+        <Box sx={{ flex: 1, padding: 2 }}>
+          <Typography
+            sx={{ fontSize: 25, paddingBottom: "10px", fontWeight: "bold" }}
+            color="text.primary"
+          >
+            ALL EVENTS
+          </Typography>
+
+          {eventsArr.map((obj, i) => {
+            return (
+              <Card
+                sx={{ minWidth: "60px", paddingTop: "10px", marginTop: "10px" }}
+              >
+                <CardContent>
+                  <Typography sx={{ fontSize: 20 }} color="text.primary">
+                    {obj.title}
+                  </Typography>
+                  <Typography variant="h5" component="div"></Typography>
+                  <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    {obj.des}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small" onClick={console.log(obj.title)}>
+                    Learn More
+                  </Button>
+                </CardActions>
+              </Card>
+            );
+          })}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 
