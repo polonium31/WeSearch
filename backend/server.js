@@ -42,7 +42,7 @@ app.post("/login", async (req, res) => {
     res.status(200).json({ user: userData });
   } catch (error) {
     console.error("Error logging in:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(401).json({ message: "Unauthorized access" });
   }
 });
 
@@ -64,7 +64,6 @@ app.post("/signin", async (req, res) => {
         type
       );
       const userRecord = userCredential.user;
-
       const userRef = db.collection(type).doc(userRecord.uid);
       await userRef.set({
         email: userRecord.email,
@@ -123,13 +122,58 @@ app.patch("/forgot-password", async (req, res) => {
 // -------------------  User's API  -------------------
 
 // get first 10 events
-app.get("/event", (req, res) => {});
+app.get("/event", (req, res) => {
+  db.collection("active-events")
+    .limit(10)
+    .get()
+    .then((snapshot) => {
+      const events = [];
+      snapshot.forEach((doc) => {
+        events.push(doc.data());
+      });
+      res.status(200).json(events);
+    })
+    .catch((error) => {
+      console.error("Error getting events:", error);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // get all events
-app.get("/events", (req, res) => {});
+app.get("/events", (req, res) => {
+  db.collection("active-events")
+    .get()
+    .then((snapshot) => {
+      const events = [];
+      snapshot.forEach((doc) => {
+        events.push(doc.data());
+      });
+      res.status(200).json(events);
+    })
+    .catch((error) => {
+      console.error("Error getting events:", error);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // get event details
-app.get("/events/{id}", (req, res) => {});
+app.get("/events/{id}", (req, res) => {
+  const eventId = req.params.id;
+  db.collection("active-events")
+    .doc(eventId)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        res.status(200).json(doc.data());
+      } else {
+        res.status(404).json({ message: "Event not found" });
+      }
+    })
+    .catch((error) => {
+      console.error("Error getting event:", error);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // search by filters
 app.get("/search", (req, res) => {});
@@ -138,42 +182,219 @@ app.get("/search", (req, res) => {});
 app.post("/user-details", (req, res) => {});
 
 // register to event
-app.post("/register-to-event", (req, res) => {});
+app.post("/register-to-event", (req, res) => {
+  const { eventId, userId } = req.body;
+  const participantRef = db.collection("participants").doc();
+  participantRef
+    .set({
+      eventId: eventId,
+      userId: userId,
+    })
+    .then(() => {
+      res.status(200).json({ message: "Registered to event successfully" });
+    })
+    .catch((error) => {
+      console.error("Error registering to event:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // edit user details
 app.patch("/edit-user-details", (req, res) => {});
 
 // unregister to event
-app.delete("/unregister-to-event", (req, res) => {});
+app.delete("/unregister-to-event", (req, res) => {
+  const { eventId, userId } = req.body;
+  db.collection("participants")
+    .where("eventId", "==", eventId)
+    .where("userId", "==", userId)
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        doc.ref.delete();
+      });
+      res.status(200).json({ message: "Unregistered to event successfully" });
+    })
+    .catch((error) => {
+      console.error("Error unregistering to event:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // -------------------  Researcher's API  -------------------
 
 // get all active events created by the researcher
-app.get("/active-research-event", (req, res) => {});
+app.get("/active-research-event", (req, res) => {
+  const researcherId = req.query.researcherId;
+  db.collection("active-events")
+    .where("researcherId", "==", researcherId)
+    .get()
+    .then((snapshot) => {
+      const events = [];
+      snapshot.forEach((doc) => {
+        events.push(doc.data());
+      });
+      res.status(200).json(events);
+    })
+    .catch((error) => {
+      console.error("Error getting active events:", error);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // get all past events created by the researcher
-app.get("/past-research-event", (req, res) => {});
+app.get("/past-research-event", (req, res) => {
+  const researcherId = req.query.researcherId;
+  db.collection("past-events")
+    .where("researcherId", "==", researcherId)
+    .get()
+    .then((snapshot) => {
+      const events = [];
+      snapshot.forEach((doc) => {
+        events.push(doc.data());
+      });
+      res.status(200).json(events);
+    })
+    .catch((error) => {
+      console.error("Error getting past events:", error);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // get all active events created by the researcher
-app.get("/participants-details/{id}", (req, res) => {});
+app.get("/participants-details", (req, res) => {
+  const eventId = req.params.id;
+  db.collection("participants")
+    .where("eventId", "==", eventId)
+    .get()
+    .then((snapshot) => {
+      const participants = [];
+      snapshot.forEach((doc) => {
+        participants.push(doc.data());
+      });
+      res.status(200).json(participants);
+    })
+    .catch((error) => {
+      console.error("Error getting participants:", error);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // create new event
-app.post("/research-event-details", (req, res) => {});
+app.post("/research-event-details", (req, res) => {
+  const { title, description, date, time, location, type, researcherId } =
+    req.body;
+  const eventRef = db.collection("active-events").doc();
+  eventRef
+    .set({
+      title: title,
+      description: description,
+      date: date,
+      time: time,
+      location: location,
+      type: type,
+      researcherId: researcherId,
+    })
+    .then(() => {
+      res.status(200).json({ message: "Event created successfully" });
+    })
+    .catch((error) => {
+      console.error("Error creating event:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // close event
-app.post("/close-event", (req, res) => {});
+app.post("/close-event", (req, res) => {
+  const { uid } = req.body;
+  const eventRef = db.collection("active-events").doc(uid);
+  eventRef
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+        const pastEventRef = db.collection("past-events").doc();
+        pastEventRef
+          .set({
+            title: data.title,
+            description: data.description,
+            date: data.date,
+            time: data.time,
+            location: data.location,
+            type: data.type,
+          })
+          .then(() => {
+            eventRef.delete();
+            res.status(200).json({ message: "Event closed successfully" });
+          })
+          .catch((error) => {
+            console.error("Error closing event:", error);
+            return res.status(500).json({ message: "Internal server error" });
+          });
+      } else {
+        return res.status(404).json({ message: "Event not found" });
+      }
+    })
+    .catch((error) => {
+      console.error("Error closing event:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // add researcher details
-app.post("/researcher-details", (req, res) => {});
+app.post("/researcher-details", (req, res) => {
+  const { position, department, uid } = req.body;
+  const researcherRef = db.collection("researcher").doc(uid);
+  researcherRef
+    .update({
+      department: department,
+      position: position,
+    })
+    .then(() => {
+      res.status(200).json({ message: "Researcher added successfully" });
+    })
+    .catch((error) => {
+      console.error("Error adding researcher:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // edit researcher details
-app.patch("/edit-researcher-details", (req, res) => {});
+app.patch("/edit-researcher-details", (req, res) => {
+  const { position, department, uid } = req.body;
+  const researcherRef = db.collection("researcher").doc(uid);
+
+  researcherRef
+    .update({
+      department: department,
+      position: position,
+    })
+    .then(() => {
+      res.status(200).json({ message: "Researcher updated successfully" });
+    })
+    .catch((error) => {
+      console.error("Error updating researcher:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 // edit event details
 app.patch("/edit-research-event-details", (req, res) => {});
 
 // delete event
-app.delete("/delete-event", (req, res) => {});
+app.delete("/delete-event", (req, res) => {
+  const { uid } = req.body;
+  const eventRef = db.collection("active-events").doc(uid);
+  eventRef
+    .delete()
+    .then(() => {
+      res.status(200).json({ message: "Event deleted successfully" });
+    })
+    .catch((error) => {
+      console.error("Error deleting event:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+});
 
 const port = 5050;
 app.listen(port, () => {
