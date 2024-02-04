@@ -10,3 +10,7 @@ node_modules/
 
 # Ignore key.json
 key.json
+
+.env
+
+.DS_Store
