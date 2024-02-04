@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import previewImage from "/public/assets/people.png";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { TextField, Button, Container, Paper, Typography } from "@mui/material";
+import { FormControl, RadioGroup, FormControlLabel, Radio, FormLabel, TextField, Button, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-
+import { login } from "../components/connect";
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -21,12 +21,15 @@ const theme = createTheme({
 });
 
 const ParticipantLogin = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [type, setType] = useState("");
 
   const handleLogin = () => {
-    console.log("Username:", username);
+    console.log("email:", email);
     console.log("Password:", password);
+    console.log("Type:", type);
+    login(email,password,type);
   };
   return (
     <ThemeProvider theme={theme}>
@@ -67,19 +70,19 @@ const ParticipantLogin = () => {
             <Typography variant="h5" gutterBottom>
               <b>Login with your University</b>
             </Typography>
-            <Typography variant="body1" style={{ marginBottom: "30px" }}>
-              Participate in events and earn exciting rewards!
+            <Typography variant="body1" style={{ marginBottom: "30px",padding: "1em"}}>
+              See all the events, or create your own as a researcher!
             </Typography>
 
             <Container component="main" maxWidth="xs">
               <form style={{ textAlign: "center" }}>
                 <TextField
-                  label="Username"
+                  label="email"
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                   label="Password"
@@ -90,6 +93,19 @@ const ParticipantLogin = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <FormControl className="radioButtonForm">
+                  <FormLabel id="demo-row-radio-buttons-group-label">I am a...</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    name="row-radio-buttons-group"
+                    onChange={(e) => {setType(e.target.value)}}
+                  >
+                    <FormControlLabel value="researcher" control={<Radio />} label="Researcher" />
+                    <FormControlLabel value="student" control={<Radio />} label="Student" />
+
+                  </RadioGroup>
+                </FormControl>
                 <Button
                   variant="contained"
                   color="primary"
@@ -105,6 +121,7 @@ const ParticipantLogin = () => {
                 >
                   Login
                 </Button>
+
               </form>
             </Container>
           </Paper>

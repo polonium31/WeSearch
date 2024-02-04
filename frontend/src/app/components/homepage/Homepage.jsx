@@ -1,3 +1,4 @@
+'use client'
 import Logo from "/public/assets/logo.png";
 import Link from "next/link";
 import HCard from "./HCard";
@@ -24,22 +25,24 @@ export default () => {
         <hr />
         <div className="buttons">
           <Link
-            href="#"
+            href="/participantLogin"
             className="btn syb"
-            onClick={ParticipantSignup(
-              "farha123@mcmaster.ca",
-              "1234",
-              "farha",
-              "hai",
-              "participant"
-            )}
+            // onClick={() => {
+            //     console.log("Login");
+            //     ParticipantSignup(
+            //   "farha123@mcmaster.ca",
+            //   "Wsdfkl13!sffd!",
+            //   "farha",
+            //   "hai",
+            //   "participant"
+            // )}}
           >
             Login
           </Link>
-          <Link href="/ParticipantLogin" className="btn lb">
+          <Link href="/participantSignup" className="btn lb">
             Participant Registration
           </Link>
-          <Link href="/ResearcherLogin" className="btn db">
+          <Link href="/researcherLogin" className="btn db">
             Researcher Registration
           </Link>
         </div>

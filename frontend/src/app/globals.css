@@ -209,3 +209,11 @@ img.logo {
   font-size: 1.5em;
 }
 
+
+.radioButtonForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}

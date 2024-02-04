@@ -48,6 +48,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/signin", async (req, res) => {
   try {
+    console.log("sign in post");
     const { email, password, firstname, lastname, type } = req.body;
 
     // Check if email follows the regex
@@ -58,10 +59,7 @@ app.post("/signin", async (req, res) => {
       const userCredential = await createUserWithEmailAndPassword(
         authc,
         email,
-        password,
-        firstname,
-        lastname,
-        type
+        password
       );
       const userRecord = userCredential.user;
       const userRef = db.collection(type).doc(userRecord.uid);
@@ -79,6 +77,7 @@ app.post("/signin", async (req, res) => {
     if (error.code === "auth/email-already-exists") {
       return res.status(409).json({ message: "Email already exists" });
     } else {
+      console.log(error);
       return res.status(500).json({ message: "Internal server error" });
     }
   }

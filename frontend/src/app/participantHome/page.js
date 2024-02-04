@@ -13,7 +13,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useState } from "react";
-import Nav from "../Nav";
+import Nav from "../components/Nav";
 
 function ParticipantHome(props) {
   const [surveyChecked, setSurveyChecked] = useState(false);
