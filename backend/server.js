@@ -5,6 +5,15 @@ const admin = require("firebase-admin");
 const credentials = require("./key.json");
 const { log } = console;
 
+const { firestore } = require("./firebase.js");
+
+const {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} = require("firebase/auth");
+const { authc } = require("./firebase.js");
+
 admin.initializeApp({
   credential: admin.credential.cert(credentials),
 });
@@ -17,30 +26,20 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, type } = req.body;
 
-    const userRecord = await admin.auth().getUserByEmail(email);
+    const userCredential = await signInWithEmailAndPassword(
+      authc,
+      email,
+      password
+    );
 
-    if (userRecord) {
-      const verified = await auth.comparePassword(
-        password,
-        userRecord.providerId
-      );
-      if (verified) {
-        return res.status(200).json({
-          message: "Login successful",
-          user: {
-            uid: userRecord.uid,
-            email: userRecord.email,
-          },
-          idToken: await admin.auth().createCustomToken(userRecord.uid),
-        });
-      } else {
-        return res.status(401).json({ message: "Invalid password" });
-      }
-    } else {
-      return res.status(404).json({ message: "User not found" });
-    }
+    const userId = userCredential.user.uid;
+    console.log(userId);
+    const userDoc = await db.collection(type).doc(userId).get();
+    const userData = userDoc.data();
+
+    res.status(200).json({ user: userData });
   } catch (error) {
     console.error("Error logging in:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -49,22 +48,30 @@ app.post("/login", async (req, res) => {
 
 app.post("/signin", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, firstname, lastname, type } = req.body;
 
     // Check if email follows the regex
     const emailRegex = /^[a-z0-9]+@mcmaster\.ca$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: "Not a McMaster email ID" });
     } else {
-      const userRecord = await admin.auth().createUser({
+      const userCredential = await createUserWithEmailAndPassword(
+        authc,
         email,
         password,
-      });
+        firstname,
+        lastname,
+        type
+      );
+      const userRecord = userCredential.user;
 
-      const userRef = db.collection("user").doc(userRecord.uid);
+      const userRef = db.collection(type).doc(userRecord.uid);
       await userRef.set({
         email: userRecord.email,
         uid: userRecord.uid,
+        firstname: firstname,
+        lastname: lastname,
+        type: type,
       });
 
       return res.status(200).json({ message: "User created successfully" });
@@ -91,9 +98,9 @@ app.post("/signout", async (req, res) => {
 
 app.delete("/delete-user", async (req, res) => {
   try {
-    const { uid } = req.body;
+    const { uid, type } = req.body;
     await admin.auth().deleteUser(uid);
-    const userRef = db.collection("user").doc(uid);
+    const userRef = db.collection(type).doc(uid);
     await userRef.delete();
     return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
@@ -105,7 +112,7 @@ app.delete("/delete-user", async (req, res) => {
 app.patch("/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
-    await admin.auth().sendPasswordResetEmail(email);
+    await sendPasswordResetEmail(authc, email);
     return res.status(200).json({ message: "Password reset email sent" });
   } catch (error) {
     console.error("Error sending password reset email:", error);
@@ -116,10 +123,10 @@ app.patch("/forgot-password", async (req, res) => {
 // -------------------  User's API  -------------------
 
 // get first 10 events
-app.get("/events", (req, res) => {});
+app.get("/event", (req, res) => {});
 
 // get all events
-app.get("/events/access_token", (req, res) => {});
+app.get("/events", (req, res) => {});
 
 // get event details
 app.get("/events/{id}", (req, res) => {});
