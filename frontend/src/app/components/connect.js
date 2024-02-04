@@ -3,7 +3,6 @@ import axios from 'axios';
 
 
 export function Participantsignup(email,password, fullname, type){
-
     axios.post('http://localhost:5050/signin',{
         email: email,
         password: password,
@@ -36,6 +35,19 @@ export function login(email,password, type){
             if (res.status == 200) {
                 window.location.replace("/participantHome");
             }
+        }).catch((error)=>{
+            console.log(error.response.data)
+        })
+}
+
+export default function eventDetails(){
+    axios.get('http://localhost:5050/events',{
+    }, {
+        headers: {'Content-Type': 'application/json'}
+    }).then(
+        (res)=>{
+            console.log(res);
+            return res;
         }).catch((error)=>{
             console.log(error.response.data)
         })

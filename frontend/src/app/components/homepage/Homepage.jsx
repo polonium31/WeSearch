@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Logo from "/public/assets/logo.png";
 import Link from "next/link";
 import HCard from "./HCard";
@@ -42,7 +42,7 @@ export default () => {
           <Link href="/participantSignup" className="btn lb">
             Participant Registration
           </Link>
-          <Link href="/researcherLogin" className="btn db">
+          <Link href="/researcherSignup" className="btn db">
             Researcher Registration
           </Link>
         </div>

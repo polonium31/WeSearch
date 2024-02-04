@@ -20,14 +20,17 @@ const theme = createTheme({
   },
 });
 
-const ResearcherLogin = () => {
-  const [username, setUsername] = useState("");
+const ResearcherSignup = () => {
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  const handleLogin = () => {
-    console.log("Username:", username);
+  const handleSignup = () => {
+    console.log("Email:", email);
     console.log("Password:", password);
+    console.log("name:", name);
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container style={{ height: "100vh" }}>
@@ -65,7 +68,7 @@ const ResearcherLogin = () => {
             }}
           >
             <Typography variant="h5" gutterBottom>
-              <b>Login with your University</b>
+              <b>Sign up with your University email</b>
             </Typography>
             <Typography variant="body1" style={{ marginBottom: "30px" }}>
               Host events and find top participants!
@@ -74,12 +77,20 @@ const ResearcherLogin = () => {
             <Container component="main" maxWidth="xs">
               <form style={{ textAlign: "center" }}>
                 <TextField
-                  label="Username"
+                  label="Full Name"
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  margin="normal"
+                  fullWidth
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
                   label="Password"
@@ -94,7 +105,7 @@ const ResearcherLogin = () => {
                   variant="contained"
                   color="primary"
                   alignItems=""
-                  onClick={handleLogin}
+                  onClick={handleSignup}
                   style={{
                     backgroundColor: "blue",
                     borderRadius: "30px",
@@ -103,7 +114,7 @@ const ResearcherLogin = () => {
                     marginTop: "10px",
                   }}
                 >
-                  Login
+                  Sign Up
                 </Button>
               </form>
             </Container>
@@ -114,4 +125,4 @@ const ResearcherLogin = () => {
   );
 };
 
-export default ResearcherLogin;
+export default ResearcherSignup;

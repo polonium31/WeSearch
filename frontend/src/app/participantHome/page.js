@@ -12,10 +12,11 @@ import { styled } from "@mui/material/styles";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Nav from "../components/Nav";
+import eventDetails from "../components/connect"
 
-function ParticipantHome(props) {
+async function ParticipantHome(props) {
   const [surveyChecked, setSurveyChecked] = useState(false);
   const [onlineChecked, setOnlineChecked] = useState(false);
   const [inPersonChecked, setInpersonChecked] = useState(false);
@@ -24,7 +25,6 @@ function ParticipantHome(props) {
   const [GradChecked, setGradChecked] = useState(false);
   const [phdChecked, setphdChecked] = useState(false);
   const [ProfessorChecked, setProfessorChecked] = useState(false);
-
   const eventsArr = [
     {
       title: "Residual Stress Measurement",
@@ -35,6 +35,7 @@ function ParticipantHome(props) {
       des: "The concept of smart grid has been the focus of a extensive research in recent decades. With the potential to revolutionize power systems, particularly considering climate change, digitalization and sustainable transition, smart grids can intelligently incorporate and manage renewable energy sources, storage systems, and other system components in a unified and coordinated environment. ",
     },
   ];
+const [events,setEvents] = useState();
 
   const CheckboxFilter = ({ label, onChange, checked }) => {
     return (
