@@ -25,7 +25,7 @@ export default () => {
         <hr />
         <div className="buttons">
           <Link
-            href="/participantLogin"
+            href="/login"
             className="btn syb"
             // onClick={() => {
             //     console.log("Login");

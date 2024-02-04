@@ -6,7 +6,7 @@ import previewImage from "/public/assets/people.png";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { TextField, Button, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-
+import { Participantsignup } from "../components/connect";
 const theme = createTheme({
   typography: {
     fontFamily: [
@@ -21,14 +21,15 @@ const theme = createTheme({
 });
 
 const ParticipantSignup = () => {
-  const [username, setUsername] = useState("");
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
   const handleSignup = () => {
-    console.log("Username:", username);
+    console.log("email:", email);
     console.log("Password:", password);
     console.log("name:", name);
+    Participantsignup(email,password,fullname,type);
   };
 
   return (
@@ -85,12 +86,12 @@ const ParticipantSignup = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
                 <TextField
-                  label="Username"
+                  label="email"
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={email}
+                  onChange={(e) => setemail(e.target.value)}
                 />
                 <TextField
                   label="Password"

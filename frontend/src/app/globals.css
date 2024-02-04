@@ -217,3 +217,10 @@ img.logo {
   justify-content: center;
   gap: 1em;
 }
+.newEventDiv {
+  display: flex;
+  justify-content: center;
+}
+.newEvent {
+  font-size: 1.6em;
+}
